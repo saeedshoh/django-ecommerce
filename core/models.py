@@ -12,7 +12,7 @@ def user_directory_path(instance, filename):
 class Category(models.Model):
     cit = ShortUUIDField(unique=True, length=10, max_length=20, prefix='cat', verbose_name="ID")
     title = models.CharField(max_length=100, verbose_name="Название")
-    image = models.ImageField(upload_to='category', verbose_name="Картинка")
+    image = models.ImageField(upload_to='category', verbose_name="Картинка", default="category.jpg")
 
     class Meta:
         verbose_name = "Катогоия"
@@ -35,7 +35,7 @@ class Vendor(models.Model):
     authentic_rating = models.CharField(max_length=100, verbose_name="Подлинный рейтинг")
     days_return = models.CharField(max_length=100, verbose_name="Дата возврата")
     warranty_period = models.CharField(max_length=100, verbose_name="Гарантийный период")
-    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка")
+    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="vendor.jpg")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
 
@@ -49,3 +49,23 @@ class Vendor(models.Model):
     def __str__(self):
         return self.title
 
+class Product(models.Model):
+    pid = ShortUUIDField(unique=True, length=10, max_length=20, verbose_name="ID")
+    title = models.CharField(max_length=100, verbose_name="Имя")
+    description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
+    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="product.jpg")
+
+    price = models.DecimalField(max_digits=9999999999, decimal_places=2)
+    old_price = models.DecimalField(max_digits=9999999999, decimal_places=2)
+
+    class Meta:
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+
+    def v_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+
+    def __str__(self):
+        return self.title
