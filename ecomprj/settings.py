@@ -40,12 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Custom Apps
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'django_dump_die',
+    'authentication.apps.AuthenticationConfig'
 
     # End Custom Apps
 ]
 
 MIDDLEWARE = [
+    'django_dump_die.middleware.DumpAndDieMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -107,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -136,10 +139,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 JAZZMIN_SETTINGS = {
     'site_title': 'Панел управления',
     'site_header': 'Admin Panel',
-    'site_brand': 'You order, we deliver',
+    'site_brand': 'E-Commerce',
     'site_logo': 'assets/imgs/theme/loading.gif',
     'copyright': 'saeedshoh@gmail.com',
 }
+
+
+AUTH_USER_MODEL = 'authentication.User'
 
 
 

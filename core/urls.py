@@ -18,10 +18,10 @@ from django.urls import path
 from .views import index
 from django.conf.urls.static import static
 from django.conf import settings
-
+app_name = 'core'
 
 urlpatterns = [
-    path('', index)
+    path('', index, name="index")
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
