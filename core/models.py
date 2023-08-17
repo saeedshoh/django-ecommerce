@@ -83,7 +83,7 @@ class Product(models.Model):
     title = models.CharField(max_length=100, verbose_name="Имя")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория")
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория", related_name='category')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None)
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="product.jpg")
     price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Цена')
