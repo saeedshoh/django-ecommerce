@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from core.models import Product, Category
+from core.models import Product, Category, Vendor
 
 
 def index(request):
@@ -25,4 +25,12 @@ def categories_list(request):
 
     return render(request, 'core/categories/list.html', {
         'categories': categories
+    })
+
+
+def vendor_list(request):
+    vendors = Vendor.objects.all()
+
+    return render(request, 'core/vendors/list.html', {
+        'vendors': vendors
     })
