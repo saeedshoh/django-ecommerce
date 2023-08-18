@@ -34,3 +34,17 @@ def vendor_list(request):
     return render(request, 'core/vendors/list.html', {
         'vendors': vendors
     })
+
+
+def vendor_detail(request, vid):
+    vendor = Vendor.objects.prefetch_related('products').get(vid=vid)
+    return render(request, 'core/vendors/detail.html', {
+        'vendor': vendor
+    })
+
+def product_detail(request, pid):
+    product = Product.objects.get(pid=pid)
+
+    return render(request, 'core/products/detail.html', {
+        'product': product
+    })

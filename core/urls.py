@@ -15,16 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import index, product_list, categories_list, vendor_list
+from .views import index, product_list, categories_list, vendor_list, vendor_detail, product_detail
 from django.conf.urls.static import static
 from django.conf import settings
 app_name = 'core'
 
 urlpatterns = [
     path('', index, name="index"),
-    path('product-list/', product_list, name="product_list"),
+    path('products/', product_list, name="product_list"),
+    path('products/<pid>/', product_detail, name="product_detail"),
+
     path('categories/', categories_list, name="categories_list"),
+
     path('vendors/', vendor_list, name="vendor_list"),
+    path('vendors/<vid>/', vendor_detail, name="vendor_detail"),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

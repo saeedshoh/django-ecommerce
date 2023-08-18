@@ -58,6 +58,7 @@ class Vendor(models.Model):
     days_return = models.CharField(max_length=100, verbose_name="Дата возврата")
     warranty_period = models.CharField(max_length=100, verbose_name="Гарантийный период")
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="vendor.jpg")
+    cover_image = models.ImageField(upload_to=user_directory_path, verbose_name="Изображение обложки", default="cover_product.jpg")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
 
@@ -84,8 +85,8 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория", related_name='category')
-    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None, related_name='vendor')
-    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="product.jpg")
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None, related_name='products')
+    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="cover_product.jpg")
     price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Цена')
     old_price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Старая цена')
     specifications = models.TextField(null=True, blank=True, verbose_name='Характеристики')
