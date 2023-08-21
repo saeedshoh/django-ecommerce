@@ -3,6 +3,7 @@ from django.urls import reverse
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from authentication.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 
 STATUS_CHOICE = (
@@ -86,14 +87,14 @@ class Tag(models.Model):
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=20, verbose_name="ID")
     title = models.CharField(max_length=100, verbose_name="Имя")
-    description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    description = RichTextUploadingField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория", related_name='category')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None, related_name='products')
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="cover_product.jpg")
     price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Цена')
     old_price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Старая цена')
-    specifications = models.TextField(null=True, blank=True, verbose_name='Характеристики')
+    specifications = RichTextUploadingField(null=True, blank=True, verbose_name='Характеристики')
     tags = TaggableManager(verbose_name='Теги')
     product_status = models.CharField(choices=STATUS, max_length=10, default='in_review',
                                       verbose_name='Статус продукта')
