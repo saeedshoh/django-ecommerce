@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'taggit',
+    'ckeditor',
     # Custom Apps
     'core.apps.CoreConfig',
     'django_dump_die',
