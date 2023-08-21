@@ -344,9 +344,8 @@
                                 <div class="d-flex flex-wrap">
                                     {% for category in categories %}
                                         <div class="col-6" style="align-items: center;  line-height: 48px; border-radius: 5px; border: 1px solid #F2F3F4; padding: 9px 18px; margin: 10px 0;">
-                                            <a href="shop-grid-right.html"> <img style="max-width: 30px; "
-                                                    src="{% static 'assets/imgs/theme/icons/category-1.svg' %}" alt=""/>Milks
-                                                and Dairies</a>
+                                            <a href="{% url 'core:category_product_list' category.cit %}"> <img style="max-width: 30px; "
+                                                    src="{{ category.image.url }}" alt=""/>{{ category.title}}</a>
                                         </div>
                                     {% endfor %}
                                 </div>

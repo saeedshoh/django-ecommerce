@@ -1,6 +1,3 @@
-from operator import call
-
-from django.http import HttpResponse
 from django.shortcuts import render
 
 from core.models import Product, Category, Vendor
@@ -30,7 +27,6 @@ def categories_list(request):
     })
 
 
-<<<<<<< HEAD
 def category_product_list_view(request, cit):
     # dd(cit)
     category = Category.objects.get(cit=cit)
@@ -39,7 +35,9 @@ def category_product_list_view(request, cit):
     return render(request, 'core/categories/product-list.html', {
         'category': category,
         'products': products
-=======
+    })
+
+
 def vendor_list(request):
     vendors = Vendor.objects.all()
 
@@ -56,8 +54,9 @@ def vendor_detail(request, vid):
 
 def product_detail(request, pid):
     product = Product.objects.get(pid=pid)
+    related_products = Product.objects.filter(category=product.category_id).exclude(pid=pid)
 
     return render(request, 'core/products/detail.html', {
-        'product': product
->>>>>>> 2773a05643a3a2e49115d06836d7b5d11bd306ca
+        'product': product,
+        'related_products': related_products
     })

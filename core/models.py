@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
-
 from authentication.models import User
+from taggit.managers import TaggableManager
 
 STATUS_CHOICE = (
     ('process', 'В процесе'),
@@ -88,22 +88,18 @@ class Product(models.Model):
     title = models.CharField(max_length=100, verbose_name="Имя")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
-<<<<<<< HEAD
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
-                                 related_name='category')
-    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None)
-    image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="product.jpg")
-=======
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория", related_name='category')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None, related_name='products')
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="cover_product.jpg")
->>>>>>> 2773a05643a3a2e49115d06836d7b5d11bd306ca
     price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Цена')
     old_price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Старая цена')
     specifications = models.TextField(null=True, blank=True, verbose_name='Характеристики')
-    tags = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Тегы", default=None)
+    tags = TaggableManager(verbose_name='Теги')
     product_status = models.CharField(choices=STATUS, max_length=10, default='in_review',
                                       verbose_name='Статус продукта')
+
+    type = models.CharField(max_length=100, verbose_name="Тип продукта", null=True, blank=True)
+    life = models.DateField(verbose_name="Срок годности", null=True, blank=True)
     status = models.BooleanField(default=True, verbose_name='Статус')
     in_stock = models.BooleanField(default=True, verbose_name='Есть в наличии')
     featured = models.BooleanField(default=False, verbose_name='Рекомендуемый')
@@ -128,7 +124,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     image = models.ImageField(upload_to='product-image', verbose_name='Изображения')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name='images')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     class Meta:
