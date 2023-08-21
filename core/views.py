@@ -1,3 +1,5 @@
+from operator import call
+
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -25,4 +27,15 @@ def categories_list(request):
 
     return render(request, 'core/categories/list.html', {
         'categories': categories
+    })
+
+
+def category_product_list_view(request, cit):
+    # dd(cit)
+    category = Category.objects.get(cit=cit)
+    products = Product.objects.filter(product_status='published', category=category)
+
+    return render(request, 'core/categories/product-list.html', {
+        'category': category,
+        'products': products
     })

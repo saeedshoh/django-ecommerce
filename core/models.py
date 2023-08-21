@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 
@@ -35,6 +36,9 @@ class Category(models.Model):
     cit = ShortUUIDField(unique=True, length=10, max_length=20, prefix='cat', verbose_name="ID")
     title = models.CharField(max_length=100, verbose_name="Название")
     image = models.ImageField(upload_to='category', verbose_name="Картинка", default="category.jpg")
+
+    def get_absolute_url(self):
+        return reverse('category_product_list', kwargs={'cit': self.cit})
 
     class Meta:
         verbose_name = "Катогоия"
@@ -83,14 +87,16 @@ class Product(models.Model):
     title = models.CharField(max_length=100, verbose_name="Имя")
     description = models.TextField(null=True, blank=True, verbose_name="Описание")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Пользователь")
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория", related_name='category')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
+                                 related_name='category')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, verbose_name="Поставщик", default=None)
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Картинка", default="product.jpg")
     price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Цена')
     old_price = models.DecimalField(max_digits=9999999999, decimal_places=2, verbose_name='Старая цена')
     specifications = models.TextField(null=True, blank=True, verbose_name='Характеристики')
     tags = models.ForeignKey(Tag, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Тегы", default=None)
-    product_status = models.CharField(choices=STATUS, max_length=10, default='in_review', verbose_name='Статус продукта')
+    product_status = models.CharField(choices=STATUS, max_length=10, default='in_review',
+                                      verbose_name='Статус продукта')
     status = models.BooleanField(default=True, verbose_name='Статус')
     in_stock = models.BooleanField(default=True, verbose_name='Есть в наличии')
     featured = models.BooleanField(default=False, verbose_name='Рекомендуемый')
@@ -159,7 +165,6 @@ class ProductReview(models.Model):
     review = models.TextField(verbose_name='Текст')
     rating = models.IntegerField(choices=RATING, default=None, verbose_name='Рейтинг')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-
 
     class Meta:
         verbose_name = 'Обзор продукта'
