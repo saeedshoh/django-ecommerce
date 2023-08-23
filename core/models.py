@@ -173,6 +173,7 @@ class ProductReview(models.Model):
     class Meta:
         verbose_name = 'Обзор продукта'
         verbose_name_plural = 'Обзоры продуктов'
+        default_related_name = 'reviews'
 
     def __str__(self):
         return self.product.title

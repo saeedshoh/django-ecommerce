@@ -56,6 +56,8 @@ def product_detail(request, pid):
     product = Product.objects.get(pid=pid)
     related_products = Product.objects.filter(category=product.category_id).exclude(pid=pid)
 
+
+
     return render(request, 'core/products/detail.html', {
         'product': product,
         'related_products': related_products
